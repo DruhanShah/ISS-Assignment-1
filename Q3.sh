@@ -13,31 +13,29 @@ done < $1
 
 text=$(tr ' ' '\n' < $1)
 IFS=$' '
-echo $text > temp1.txt
-text=$(sed 's/[!.,]//g' temp1.txt)
-echo $(echo $text | grep "\S" ) > temp2.txt
-IFS=$'\n'
+text=$(echo $text | sed 's/[;!.,]//g')
+text=$(echo $text | grep "\S" )
+text=$(echo $text | tr '\n' ' ')
 declare -A freq
+array=($(echo $text))
 
-while read word
+for word in ${array[@]}
 do
 	freq[$word]=0
-done < temp2.txt
+done
 
+unique=()
 
-while read word
+for word in ${array[@]}
 do
 	freq[$word]=$(( ${freq[$word]} + 1 ))
 	if [[ ${freq[$word]} == 1 ]]
 	then
-		echo $word >> temp3.txt
+		unique+=$word
 	fi
-done < temp2.txt
+done
 
-
-while read key
+for key in ${!freq[@]}
 do
 	echo "Word:" $key " - " ${freq[$key]}
-done < temp3.txt
-
-rm temp*.txt
+done

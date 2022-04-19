@@ -11,27 +11,33 @@ do
 	echo "Line No: " $counter " - " $( wc -w <<< $line )
 done < $1
 
-text=$(tr ' ' '\n' < $1 | sort)
+text=$(tr ' ' '\n' < $1)
 IFS=$' '
-echo $text > temp.txt
-text=$(sed 's/[.,]//g' temp.txt)
-echo $text > temp.txt
-previous=""
+echo $text > temp1.txt
+text=$(sed 's/[!.,]//g' temp1.txt)
+echo $(echo $text | grep "\S" ) > temp2.txt
+IFS=$'\n'
+declare -A freq
+
 while read word
-do 
-	if [[ $previous == "" ]]
+do
+	freq[$word]=0
+done < temp2.txt
+
+
+while read word
+do
+	freq[$word]=$(( ${freq[$word]} + 1 ))
+	if [[ ${freq[$word]} == 1 ]]
 	then
-		previous=$word
-		count=1
+		echo $word >> temp3.txt
 	fi
-	if [[ $word != $previous ]]
-	then
-		echo "Word:" $previous "-" $count
-		count=1
-		previous=$word
-	else
-		count=$(( $count + 1 ))
-	fi
-done < temp.txt
-echo "Word:" $previous "-" $count
-rm temp.txt
+done < temp2.txt
+
+
+while read key
+do
+	echo "Word:" $key " - " ${freq[$key]}
+done < temp3.txt
+
+#rm temp*.txt

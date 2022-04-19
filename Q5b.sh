@@ -1,5 +1,8 @@
 #!/bin/bash
 read s;
+
+s=$(echo $s | ./Q5a.sh)
+
 n=${#s}
 
 for (( x=0; x<n; x++ ))

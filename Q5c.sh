@@ -1,3 +1,4 @@
+#!/bin/bash
 read s
 n=${#s}
 for (( x=0 ; x<n ; x++ ))

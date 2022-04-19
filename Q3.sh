@@ -40,4 +40,4 @@ do
 	echo "Word:" $key " - " ${freq[$key]}
 done < temp3.txt
 
-#rm temp*.txt
+rm temp*.txt

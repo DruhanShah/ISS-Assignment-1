@@ -24,15 +24,9 @@ do
 	freq[$word]=0
 done
 
-unique=()
-
 for word in ${array[@]}
 do
 	freq[$word]=$(( ${freq[$word]} + 1 ))
-	if [[ ${freq[$word]} == 1 ]]
-	then
-		unique+=$word
-	fi
 done
 
 for key in ${!freq[@]}
